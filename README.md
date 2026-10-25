@@ -1,2 +1,43 @@
-# hyoki-toolkit-workspace
-Local AI tool catalog with 62 entries, project feature mapping, notes and development task board.
+# 효기 도구 작업실 · Hyoki Toolkit Workspace
+
+수집한 AI·개발·콘텐츠 도구 **62개 항목**을 검색하고, 프로젝트별 적용 후보·메모·개발 작업을 관리하는 로컬 웹앱입니다.
+
+## 바로 실행
+
+Python 3.11 이상에서 저장소 폴더를 열고 실행하세요. 추가 패키지는 없습니다.
+
+```bash
+python -m http.server 8765 --bind 127.0.0.1
+```
+
+브라우저에서 http://127.0.0.1:8765 를 엽니다. Windows에서는 `python` 대신 `py`를 사용할 수 있습니다. 종료는 Ctrl+C.
+
+## 구현된 기능
+
+- 도구명·기능·적용 프로젝트 검색, 분류와 프로젝트 필터
+- 적용 후보 선택, 도구별 개인 메모
+- 할 일 → 진행 중 → 검토 → 완료 작업 보드
+- 브라우저 localStorage 저장, JSON 내보내기·검증 후 가져오기
+- 무료·유료·로컬·하드웨어 조건과 미확인 항목 표시
+- 외부 스크립트·추적기·유료 API 호출 없음. 원본 링크는 사용자가 누를 때만 열립니다.
+
+## 저장 위치와 한계
+
+기록은 이 브라우저·이 주소의 localStorage에 저장됩니다. 다른 포트, 다른 브라우저에는 자동으로 동기화되지 않습니다. 사용 전/후 JSON 백업을 권장합니다. API 키·개인 계좌·비밀번호를 메모하지 마세요.
+
+도구 기능·요금은 대화에서 정리한 참고 정보이며, 2026-10-26 구현 시점에 모든 서비스를 재검증한 데이터베이스가 아닙니다. `catalog.js`에서 직접 수정할 수 있습니다. 이름 미확정인 '레아'는 추천 보류로 표시했습니다.
+
+## 다른 저장소와 연결
+
+- `MetaSonGi/hyoki-local-content-studio`: FFmpeg·Whisper·Ollama 기반 콘텐츠 파이프라인
+- `MetaSonGi/hyoki-agent-research-lab`: 문서 검색·RAG·역할별 작업·실험 기록
+- [적용 기능과 개발 범위](FEATURE_MAP.md)
+
+## 검증
+
+```bash
+node --check app.js
+node --test test_app.cjs
+```
+
+외부 제품 소스나 스킬을 복제·재배포하지 않았습니다. 각 도구를 설치할 때는 원본 라이선스를 확인하세요.
