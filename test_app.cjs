@@ -18,3 +18,23 @@ test('62-item catalog filters and task persistence across reload',()=>{
 test('invalid imported task schema is rejected',()=>{
  const {ctx}=boot();assert.throws(()=>vm.runInContext('validate({selected:[],notes:{},tasks:[{id:"x",title:"bad",project:"콘텐츠 제작",status:"execute"}]})',ctx));
 });
+test('task can be deleted from the board',()=>{
+ const {ctx,nodes,storage}=boot();
+ nodes.title.value='지울 작업';nodes['task-project'].value='PC 작업';nodes['task-form'].onsubmit({preventDefault(){}});
+ const todo=nodes.board.children[0],box=todo.children[1],del=box.children.find(c=>c.textContent==='삭제');
+ assert.ok(del);del.onclick();
+ assert.equal(JSON.parse(storage.get('hyoki-toolkit-workspace-v1')).tasks.length,0);
+});
+test('corrupt saved data is backed up before it can be overwritten',()=>{
+ const {nodes,storage}=boot('{broken');
+ assert.equal(storage.get('hyoki-toolkit-workspace-v1-corrupt-backup'),'{broken');
+ nodes.title.value='새 작업';nodes['task-project'].value='PC 작업';nodes['task-form'].onsubmit({preventDefault(){}});
+ assert.equal(storage.get('hyoki-toolkit-workspace-v1-corrupt-backup'),'{broken');
+});
+test('import input is reset so the same file can be imported again',async()=>{
+ const {nodes}=boot();
+ const data=JSON.stringify({selected:[],notes:{},tasks:[]});
+ nodes.import.files=[{size:data.length,text:async()=>data}];nodes.import.value='C:/fakepath/a.json';
+ await nodes.import.onchange();
+ assert.equal(nodes.import.value,'');
+});

@@ -4,9 +4,9 @@
 
 | 저장소 | 적용 아이디어 | 실제 구현 | 추가 조건 |
 |---|---|---|---|
-| hyoki-toolkit-workspace | Jira·AppFlowy식 작업 관리, 도구 목록 | 62개 항목 검색, 적용 후보·메모, 상태 보드, JSON 백업 | Python 브라우저 서버 |
-| hyoki-local-content-studio | LosslessCut·Whisper·Ollama 흐름 | FFmpeg 구간 추출, Whisper SRT/TXT, 템플릿/LLM 초안 | FFmpeg; 음성은 Whisper, AI 초안은 Ollama |
-| hyoki-agent-research-lab | Pi·Paperclip·OpenResearch·Atlas의 일부 아이디어 | 역할별 수동 작업 큐, 근거 검색, Ollama 임베딩·RAG, 실제 로컬 Python 실험 기록·비교 | 키워드 검색은 Python만; AI는 Ollama |
+| tool-catalog-workspace | Jira·AppFlowy식 작업 관리, 도구 목록 | 62개 항목 검색, 적용 후보·메모, 상태 보드, JSON 백업 | Python 브라우저 서버 |
+| video-clip-subtitle-studio | LosslessCut·Whisper·Ollama 흐름 | FFmpeg 구간 추출, Whisper SRT/TXT, 템플릿/LLM 초안 | FFmpeg; 음성은 Whisper, AI 초안은 Ollama |
+| research-workbench | Pi·Paperclip·OpenResearch·Atlas의 일부 아이디어 | 역할별 수동 작업 큐, 근거 검색, Ollama 임베딩·RAG, 실제 로컬 Python 실험 기록·비교 | 키워드 검색은 Python만; AI는 Ollama |
 
 이름이 비슷한 원본 제품 전체를 재현한 것이 아닙니다. 특히 연구실은 자율 멀티 에이전트 오케스트레이터가 아니며, 생성 결과를 자동 실행하지 않습니다.
 

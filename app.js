@@ -10,7 +10,11 @@ function validate(s){
  if(s.tasks.length>5000||s.selected.length>1000||Object.keys(s.notes).length>1000)throw Error('기록이 너무 큽니다.');
  return s;
 }
-try{const saved=localStorage.getItem(KEY);if(saved)state=validate(JSON.parse(saved));}catch(e){$('message').textContent='기록 읽기 실패. 원본을 덮어쓰지 않으려면 먼저 브라우저 데이터를 백업하세요.';}
+try{const saved=localStorage.getItem(KEY);if(saved)state=validate(JSON.parse(saved));}catch(e){
+ // 손상된 기록은 다음 저장 때 덮어써지므로, 그 전에 별도 키로 원본을 보관한다.
+ try{const raw=localStorage.getItem(KEY);if(raw!=null&&localStorage.getItem(KEY+'-corrupt-backup')==null)localStorage.setItem(KEY+'-corrupt-backup',raw);}catch(_){}
+ $('message').textContent='기록 읽기 실패. 원본은 '+KEY+'-corrupt-backup 키에 보관했습니다.';
+}
 function save(){try{localStorage.setItem(KEY,JSON.stringify(state));$('message').textContent='이 브라우저에 저장했습니다.';}catch(e){$('message').textContent='저장 실패: JSON으로 내보내 백업하세요.';}}
 function options(id,values){for(const v of values){const o=el('option',v);o.value=v;$(id).append(o);}}
 options('category',[...new Set(CATALOG.map(t=>t.category))]);options('project',projects);options('task-project',projects);
@@ -34,12 +38,15 @@ function renderBoard(){
    const box=el('div',undefined,'task');box.append(el('strong',task.title),el('small',task.project));
    const move=el('select');move.setAttribute('aria-label',task.title+' 상태');
    for(const [value,label] of Object.entries(columns)){const op=el('option',label);op.value=value;move.append(op);}move.value=status;
-   move.onchange=()=>{task.status=move.value;save();renderBoard();};box.append(move);col.append(box);
+   move.onchange=()=>{task.status=move.value;save();renderBoard();};
+   const del=el('button','삭제');del.setAttribute('aria-label',task.title+' 삭제');
+   del.onclick=()=>{if(!confirm('이 작업을 삭제할까요?'))return;state.tasks=state.tasks.filter(t=>t.id!==task.id);save();renderBoard();};
+   box.append(move,del);col.append(box);
   }$('board').append(col);
  }
 }
 for(const id of ['query','category','project','selected'])$(id).addEventListener('input',renderCatalog);
 $('task-form').onsubmit=e=>{e.preventDefault();const title=$('title').value.trim();if(!title)return;state.tasks.push({id:crypto.randomUUID(),title,project:$('task-project').value,status:'todo'});$('title').value='';save();renderBoard();};
 $('export').onclick=()=>{const url=URL.createObjectURL(new Blob([JSON.stringify(state,null,2)],{type:'application/json'}));const a=el('a');a.href=url;a.download='hyoki-workspace.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);};
-$('import').onchange=async()=>{try{const file=$('import').files[0];if(!file)return;if(file.size>5_000_000)throw Error('5MB 이하 파일만 지원합니다.');const incoming=validate(JSON.parse(await file.text()));if(!confirm('현재 기록을 가져온 기록으로 교체할까요? 먼저 내보내기로 백업할 수 있습니다.'))return;state=incoming;save();renderCatalog();renderBoard();}catch(e){$('message').textContent=e.message;}};
+$('import').onchange=async()=>{try{const file=$('import').files[0];if(!file)return;if(file.size>5_000_000)throw Error('5MB 이하 파일만 지원합니다.');const incoming=validate(JSON.parse(await file.text()));if(!confirm('현재 기록을 가져온 기록으로 교체할까요? 먼저 내보내기로 백업할 수 있습니다.'))return;state=incoming;save();renderCatalog();renderBoard();}catch(e){$('message').textContent=e.message;}finally{$('import').value='';}};
 renderCatalog();renderBoard();
