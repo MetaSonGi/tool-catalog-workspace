@@ -1,5 +1,9 @@
 # 효기 도구 작업실 · Hyoki Toolkit Workspace
 
+> **관련 저장소 구분** — 이 저장소는 **정식판**입니다: 62개 도구 검색에 더해 프로젝트별 적용 매핑, JSON 백업·가져오기, 기능 지도(FEATURE_MAP)를 제공합니다.
+> 도구 데이터를 `data/tools.json`으로 분리해 직접 고치기 쉬운 **경량판**은 [hyoki-toolkit-workspace](https://github.com/MetaSonGi/hyoki-toolkit-workspace)입니다.
+
+
 수집한 AI·개발·콘텐츠 도구 **62개 항목**을 검색하고, 프로젝트별 적용 후보·메모·개발 작업을 관리하는 로컬 웹앱입니다.
 
 ## 바로 실행
